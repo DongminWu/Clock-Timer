@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Clock-Timer</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+</head>
+
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+
+    <div class="row" style="margin-top: 10em">
+
+      <h4 class="twelve column">Current Time</h4>
+      <h1 class='clock'>00:00:00</h1>
+    </div>
+    <div class="row" style="margin-top: 10em">
+      <h4>Promodoro Timer</h4>
+      <h2 class='promodoro'>00:25:00</h2>
+
+    </div>
+
+    <div class="row">
+
+      <button class="four columns startButton">Start</button>
+      <button class="four columns pauseButton">Pause</button>
+      <button class="four columns stopButton">Stop</button>
+    </div>
+
+
+  </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <script src="http://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+    crossorigin="anonymous"></script>
+
+
+  <script src="js/easytimer.min.js"></script>
+  <script>
+    var timer = new Timer();
+
+
+    // $('.promodoro').html(timer.getTimeValues().toString());
+    timer.addEventListener('secondsUpdated', function (e) {
+      $('.promodoro').html(timer.getTimeValues().toString());
+    });
+    timer.addEventListener('targetAchieved', function (e) {
+      $('.promodoro').html('Times UP!!');
+    });
+
+
+    $(' .startButton').click(function () {
+      timer.start({
+        countdown: true,
+        startValues: {
+          seconds: 25 * 60
+        }
+      });
+    });
+    $(' .pauseButton').click(function () {
+      timer.pause();
+    });
+    $(' .stopButton').click(function () {
+      timer.stop();
+      timer.reset({
+        countdown: true,
+        startValues: {
+          seconds: 25 * 60
+        }
+      });
+      $('.promodoro').html(timer.getTimeValues().toString());
+    });
+  </script>
+
+  <script>
+    function startTime() {
+      var today = new Date();
+      var h = today.getHours();
+      var m = today.getMinutes();
+      var s = today.getSeconds();
+      m = checkTime(m);
+      s = checkTime(s);
+      $('.clock').html(h + ":" + m + ":" + s);
+      var t = setTimeout(startTime, 500);
+    }
+
+    function checkTime(i) {
+      if (i < 10) {
+        i = "0" + i
+      }; // add zero in front of numbers < 10
+      return i;
+    }
+
+    startTime();
+  </script>
+
+
+
+</body>
+
+</html>
